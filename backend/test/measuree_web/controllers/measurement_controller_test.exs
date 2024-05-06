@@ -1,5 +1,5 @@
 defmodule MeasureeWeb.MeasurementControllerTest do
-  use MeasureeWeb.ConnCase
+  use MeasureeWeb.ConnCase, async: true
 
   import Measuree.MetricsFixtures
 

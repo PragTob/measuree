@@ -11,7 +11,9 @@ config :measuree, Measuree.Repo,
   hostname: "localhost",
   database: "measuree_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
-  pool_size: System.schedulers_online() * 2
+  pool_size: System.schedulers_online() * 2,
+  # make debugging with `IEx.pry()` easier
+  ownership_timeout: :infinity
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
