@@ -7,5 +7,7 @@ defmodule MeasureeWeb.Router do
 
   scope "/api", MeasureeWeb do
     pipe_through :api
+
+    resources "/metrics", MetricController, only: [:index]
   end
 end

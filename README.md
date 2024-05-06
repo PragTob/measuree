@@ -17,9 +17,20 @@ in the database.
 
 * Get the tools documented in `.tool-versions` in the documented versions (slightl older _should_ work but isn't tested), [`asdf`](https://github.com/asdf-vm/asdf) with the appropriate [plugins](https://github.com/asdf-vm/asdf-plugins) can help you with that other wise check the docs ([Elixir](https://elixir-lang.org/install.html), [postgres](https://www.postgresql.org/docs/current/tutorial-install.html)).
 
+## Language
+
+* Metric - a value we'd want to measure, such as "Temperature" or "Length"
+
 ## Assumptions
 
+* Metrics are limited, known upfront and don't need frequent changes --> Allows us to forego CRUD features for metrics and provide select boxes for submitting measurements.
+* Metrics are unique aka no 2 of the same name can exist
+* There are no further constraints on metrics i.e. a metric named "S" may be valid, further validations not necessary as we manage the data
+
 ## Decisions
+
+### Backend
+* According to assumptions **CRUD API functionality (except for index) is removed**, CRUD functionality on the context level remains to allow easy changes/addition if necessary (if this was in production and we needed a new metric, someone could connect to a prod console and add a metric if this was rare)
 
 ## Improvements
 
