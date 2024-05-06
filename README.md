@@ -13,8 +13,14 @@ metrics. Each metric will have: Timestamp, name, and value. The metrics will be 
 in a timeline and must show averages per minute/hour/day The metrics will be persisted
 in the database.
 
+## Installation
+
+* Get the tools documented in `.tool-versions` in the documented versions (slightl older _should_ work but isn't tested), [`asdf`](https://github.com/asdf-vm/asdf) with the appropriate [plugins](https://github.com/asdf-vm/asdf-plugins) can help you with that other wise check the docs ([Elixir](https://elixir-lang.org/install.html), [postgres](https://www.postgresql.org/docs/current/tutorial-install.html)).
+
 ## Assumptions
 
 ## Decisions
 
 ## Improvements
+
+* Containerization would be much appreciated, but in the interest of time, me usually running bare metal and the mandated complexity of 2 applications
