@@ -19,8 +19,7 @@ config :measuree, MeasureeWeb.Endpoint,
     formats: [json: MeasureeWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Measuree.PubSub,
-  live_view: [signing_salt: "8rhdyZ1E"]
+  pubsub_server: Measuree.PubSub
 
 # Configures Elixir's Logger
 config :logger, :console,
