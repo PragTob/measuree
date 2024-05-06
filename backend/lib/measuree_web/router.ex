@@ -9,5 +9,6 @@ defmodule MeasureeWeb.Router do
     pipe_through :api
 
     resources "/metrics", MetricController, only: [:index]
+    resources "/measurements", MeasurementController, only: [:index, :create, :show]
   end
 end

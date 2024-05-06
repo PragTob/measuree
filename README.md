@@ -23,10 +23,18 @@ in the database.
 
 ## Assumptions
 
+The task is very wide roaming and building a full application to do this is almost a startup. I was told I can make assumptions to ease the implementation, so I did :) And here they are.
+
 * Metrics are limited, known upfront and don't need frequent changes --> Allows us to forego CRUD features for metrics and provide select boxes for submitting measurements.
+  * Also means that storing them in a separate table and reference makes sense as the names don't change all the time
 * Metrics are unique aka no 2 of the same name can exist
 * There are no further constraints on metrics i.e. a metric named "S" may be valid, further validations not necessary as we manage the data
-
+* timestamp accuracy for measurements doesn't need to be in the microseconds (aka seconds are enough)
+* measurements values are ok to store as floats aka small imprecisions when doing the averages are fine, since they are well... averages - allows us to forego some complexity of working with decimals
+* it's ok to have multiple measurements for the same time
+* We only care about creating and listing measurements right now, update and delete are out of scope (but potentially useful later). Functionality removed from the API for this reason, but kept in the context for the same reason as with metrics.
+* Saving & submitting the timestamp as UTC is ok
+* the UI will not be the main way to submit measurements and is only done for demo purposes, usually they'd likely be submitted via API
 ## Decisions
 
 ### Backend

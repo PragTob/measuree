@@ -66,4 +66,79 @@ defmodule Measuree.MetricsTest do
       assert %Ecto.Changeset{} = Metrics.change_metric(metric)
     end
   end
+
+  describe "measurements" do
+    alias Measuree.Metrics.Measurement
+
+    import Measuree.MetricsFixtures
+
+    @invalid_attrs %{timestamp: nil, value: nil}
+
+    test "list_measurements/0 returns all measurements" do
+      measurement = measurement_fixture()
+      assert Metrics.list_measurements() == [measurement]
+    end
+
+    test "get_measurement!/1 returns the measurement with given id" do
+      measurement = measurement_fixture()
+      assert Metrics.get_measurement!(measurement.id) == measurement
+    end
+
+    test "create_measurement/1 with valid data creates a measurement" do
+      valid_attrs = %{
+        timestamp: ~U[2024-05-05 12:47:00Z],
+        value: 120.5,
+        metric_id: metric_fixture().id
+      }
+
+      assert {:ok, %Measurement{} = measurement} = Metrics.create_measurement(valid_attrs)
+      assert measurement.timestamp == ~U[2024-05-05 12:47:00Z]
+      assert measurement.value == 120.5
+    end
+
+    test "create_measurement/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Metrics.create_measurement(@invalid_attrs)
+    end
+
+    test "create_measurement/1 without a valid reference to a metric fails" do
+      fake_metric_id = 9999
+
+      attrs = %{
+        timestamp: ~U[2024-05-05 12:47:00Z],
+        value: 120.5,
+        metric_id: fake_metric_id
+      }
+
+      assert {:error, changeset} = Metrics.create_measurement(attrs)
+      assert %{metric_id: ["does not exist"]} = errors_on(changeset)
+    end
+
+    test "update_measurement/2 with valid data updates the measurement" do
+      measurement = measurement_fixture()
+      update_attrs = %{timestamp: ~U[2024-05-06 12:47:00Z], value: 456.7}
+
+      assert {:ok, %Measurement{} = measurement} =
+               Metrics.update_measurement(measurement, update_attrs)
+
+      assert measurement.timestamp == ~U[2024-05-06 12:47:00Z]
+      assert measurement.value == 456.7
+    end
+
+    test "update_measurement/2 with invalid data returns error changeset" do
+      measurement = measurement_fixture()
+      assert {:error, %Ecto.Changeset{}} = Metrics.update_measurement(measurement, @invalid_attrs)
+      assert measurement == Metrics.get_measurement!(measurement.id)
+    end
+
+    test "delete_measurement/1 deletes the measurement" do
+      measurement = measurement_fixture()
+      assert {:ok, %Measurement{}} = Metrics.delete_measurement(measurement)
+      assert_raise Ecto.NoResultsError, fn -> Metrics.get_measurement!(measurement.id) end
+    end
+
+    test "change_measurement/1 returns a measurement changeset" do
+      measurement = measurement_fixture()
+      assert %Ecto.Changeset{} = Metrics.change_measurement(measurement)
+    end
+  end
 end
