@@ -10,5 +10,6 @@ defmodule MeasureeWeb.Router do
 
     resources "/metrics", MetricController, only: [:index]
     resources "/measurements", MeasurementController, only: [:index, :create, :show]
+    resources "/measurement_statitics", MeasurementStatisticController, only: [:index]
   end
 end

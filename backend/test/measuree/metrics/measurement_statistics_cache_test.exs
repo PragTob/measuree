@@ -1,10 +1,10 @@
-defmodule Measuree.MeasurementStatisticsCacheTest do
+defmodule Measuree.MeasurementStatisticCacheTest do
   use Measuree.DataCase, async: true
 
   import Measuree.MetricsFixtures
   import Ecto.Query
 
-  alias Measuree.Metrics.MeasurementStatistics
+  alias Measuree.Metrics.MeasurementStatistic
 
   @timestamp ~U[2024-05-05 12:47:35Z]
   @minute_start_timestamp ~U[2024-05-05 12:47:00Z]
@@ -25,10 +25,10 @@ defmodule Measuree.MeasurementStatisticsCacheTest do
       # sorted by time_start
       assert [day, hour, minute] = statistics
 
-      assert %MeasurementStatistics{time_bucket: :day, time_start: @day_start_timestamp} = day
-      assert %MeasurementStatistics{time_bucket: :hour, time_start: @hour_start_timestamp} = hour
+      assert %MeasurementStatistic{time_bucket: :day, time_start: @day_start_timestamp} = day
+      assert %MeasurementStatistic{time_bucket: :hour, time_start: @hour_start_timestamp} = hour
 
-      assert %MeasurementStatistics{time_bucket: :minute, time_start: @minute_start_timestamp} =
+      assert %MeasurementStatistic{time_bucket: :minute, time_start: @minute_start_timestamp} =
                minute
 
       Enum.each(statistics, fn statistic ->
@@ -75,19 +75,19 @@ defmodule Measuree.MeasurementStatisticsCacheTest do
       assert [_day, _hour, _minute, tomorrow_day, tomorrow_hour, tomorrow_minute] = statistics
 
       # as the day start is also the start of the hour and minute all time_start values are the same
-      assert %MeasurementStatistics{
+      assert %MeasurementStatistic{
                time_bucket: :day,
                time_start: ^tomorrow_day_start,
                average: ^value
              } = tomorrow_day
 
-      assert %MeasurementStatistics{
+      assert %MeasurementStatistic{
                time_bucket: :hour,
                time_start: ^tomorrow_day_start,
                average: ^value
              } = tomorrow_hour
 
-      assert %MeasurementStatistics{
+      assert %MeasurementStatistic{
                time_bucket: :minute,
                time_start: ^tomorrow_day_start,
                average: ^value
@@ -115,7 +115,7 @@ defmodule Measuree.MeasurementStatisticsCacheTest do
       assert_in_delta hour.average, new_average, @precision
       assert_in_delta minute.average, value, @precision
 
-      assert %MeasurementStatistics{
+      assert %MeasurementStatistic{
                time_bucket: :minute,
                time_start: ^next_minute,
                average: ^other_value
@@ -129,12 +129,12 @@ defmodule Measuree.MeasurementStatisticsCacheTest do
       value = 100.0
       measurement_fixture(%{value: value, timestamp: @timestamp, metric: metric})
 
-      assert Repo.aggregate(MeasurementStatistics, :count, :id) == 3
+      assert Repo.aggregate(MeasurementStatistic, :count, :id) == 3
 
       other_value = 42.0
       measurement_fixture(%{value: other_value, timestamp: @timestamp, metric: other_metric})
 
-      assert Repo.aggregate(MeasurementStatistics, :count, :id) == 6
+      assert Repo.aggregate(MeasurementStatistic, :count, :id) == 6
 
       assert statistics = measurement_statistics_for(metric)
       assert length(statistics) == 3
@@ -168,13 +168,13 @@ defmodule Measuree.MeasurementStatisticsCacheTest do
     end
   end
 
-  defp measurement_statistics_for_query(query \\ MeasurementStatistics, metric) do
+  defp measurement_statistics_for_query(query \\ MeasurementStatistic, metric) do
     query
     |> where(metric_id: ^metric.id)
     |> order_by(asc: :time_start, asc: :time_bucket)
   end
 
-  defp measurement_statistics_for(query \\ MeasurementStatistics, metric) do
+  defp measurement_statistics_for(query \\ MeasurementStatistic, metric) do
     query
     |> measurement_statistics_for_query(metric)
     |> Repo.all()

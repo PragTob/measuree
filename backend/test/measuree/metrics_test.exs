@@ -141,4 +141,33 @@ defmodule Measuree.MetricsTest do
       assert %Ecto.Changeset{} = Metrics.change_measurement(measurement)
     end
   end
+
+  describe "measurement_statitics" do
+    alias Measuree.Metrics.MeasurementStatistic
+
+    import Measuree.MetricsFixtures
+
+    test "list_measurement_statitics/0 returns all measurement_statitics" do
+      measurement_statistic = measurement_statistic_fixture()
+      assert Metrics.list_measurement_statitics() == [measurement_statistic]
+    end
+
+    test "create_measurement_statistic/1 with valid data creates a measurement_statistic" do
+      metric = metric_fixture()
+
+      valid_attrs = %{
+        average: 120.5,
+        time_start: ~U[2024-05-07 09:13:00Z],
+        time_bucket: :hour,
+        metric_id: metric.id
+      }
+
+      assert {:ok, %MeasurementStatistic{} = measurement_statistic} =
+               Metrics.create_measurement_statistic(valid_attrs)
+
+      assert measurement_statistic.average == 120.5
+      assert measurement_statistic.time_start == ~U[2024-05-07 09:13:00Z]
+      assert measurement_statistic.time_bucket == :hour
+    end
+  end
 end

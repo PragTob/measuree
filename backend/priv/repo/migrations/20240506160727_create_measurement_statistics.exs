@@ -1,4 +1,4 @@
-defmodule Measuree.Repo.Migrations.CreateMeasurementStatistics do
+defmodule Measuree.Repo.Migrations.CreateMeasurementStatistic do
   use Ecto.Migration
 
   def change do

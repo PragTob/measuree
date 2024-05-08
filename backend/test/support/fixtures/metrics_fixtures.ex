@@ -37,4 +37,23 @@ defmodule Measuree.MetricsFixtures do
 
     measurement
   end
+
+  @doc """
+  Generate a measurement_statistic.
+  """
+  def measurement_statistic_fixture(attrs \\ %{}) do
+    metric = Map.get_lazy(attrs, :metric, fn -> metric_fixture() end)
+
+    {:ok, measurement_statistic} =
+      attrs
+      |> Enum.into(%{
+        average: 120.5,
+        time_start: ~U[2024-05-07 09:13:00Z],
+        time_bucket: :hour,
+        metric_id: metric.id
+      })
+      |> Measuree.Metrics.create_measurement_statistic()
+
+    measurement_statistic
+  end
 end

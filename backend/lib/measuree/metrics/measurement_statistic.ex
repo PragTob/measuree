@@ -1,4 +1,4 @@
-defmodule Measuree.Metrics.MeasurementStatistics do
+defmodule Measuree.Metrics.MeasurementStatistic do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -197,4 +197,16 @@ defmodule Measuree.Metrics do
   def change_measurement(%Measurement{} = measurement, attrs \\ %{}) do
     Measurement.changeset(measurement, attrs)
   end
+
+  alias Measuree.Metrics.MeasurementStatistic
+
+  def list_measurement_statitics do
+    Repo.all(MeasurementStatistic)
+  end
+
+  def create_measurement_statistic(attrs \\ %{}) do
+    %MeasurementStatistic{}
+    |> MeasurementStatistic.changeset(attrs)
+    |> Repo.insert()
+  end
 end
