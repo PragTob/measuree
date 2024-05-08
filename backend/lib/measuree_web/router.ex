@@ -3,6 +3,8 @@ defmodule MeasureeWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    # grml SPA allow access
+    plug CORSPlug, origin: ["http://localhost:5173"]
   end
 
   scope "/api", MeasureeWeb do
@@ -10,6 +12,6 @@ defmodule MeasureeWeb.Router do
 
     resources "/metrics", MetricController, only: [:index]
     resources "/measurements", MeasurementController, only: [:index, :create, :show]
-    resources "/measurement_statitics", MeasurementStatisticController, only: [:index]
+    resources "/measurement_statistics", MeasurementStatisticController, only: [:index]
   end
 end
