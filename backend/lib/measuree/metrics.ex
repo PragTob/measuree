@@ -200,7 +200,7 @@ defmodule Measuree.Metrics do
 
   alias Measuree.Metrics.MeasurementStatistic
 
-  def list_measurement_statitics do
+  def list_measurement_statistics do
     Repo.all(MeasurementStatistic)
   end
 

@@ -142,14 +142,14 @@ defmodule Measuree.MetricsTest do
     end
   end
 
-  describe "measurement_statitics" do
+  describe "measurement_statistics" do
     alias Measuree.Metrics.MeasurementStatistic
 
     import Measuree.MetricsFixtures
 
-    test "list_measurement_statitics/0 returns all measurement_statitics" do
+    test "list_measurement_statistics/0 returns all measurement_statistics" do
       measurement_statistic = measurement_statistic_fixture()
-      assert Metrics.list_measurement_statitics() == [measurement_statistic]
+      assert Metrics.list_measurement_statistics() == [measurement_statistic]
     end
 
     test "create_measurement_statistic/1 with valid data creates a measurement_statistic" do

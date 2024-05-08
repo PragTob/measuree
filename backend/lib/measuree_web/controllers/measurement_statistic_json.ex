@@ -2,22 +2,25 @@ defmodule MeasureeWeb.MeasurementStatisticJSON do
   alias Measuree.Metrics.MeasurementStatistic
 
   @doc """
-  Renders a list of measurement_statitics.
+  Renders a list of measurement_statistics.
   """
-  def index(%{measurement_statitics: measurement_statitics}) do
-    %{data: for(measurement_statistic <- measurement_statitics, do: data(measurement_statistic))}
+  def index(%{measurement_statistics: measurement_statistics}) do
+    %{data: grouped_data(measurement_statistics)}
   end
 
-  @doc """
-  Renders a single measurement_statistic.
-  """
-  def show(%{measurement_statistic: measurement_statistic}) do
-    %{data: data(measurement_statistic)}
+  # we want to achieve a structure that is:
+  #
+  defp grouped_data(statistics) do
+    statistics
+    |> Enum.group_by(& &1.time_bucket)
+    |> Map.new(fn {key, value} ->
+      data = Enum.group_by(value, & &1.metric_id, &data/1)
+      {key, data}
+    end)
   end
 
   defp data(%MeasurementStatistic{} = measurement_statistic) do
     %{
-      id: measurement_statistic.id,
       average: measurement_statistic.average,
       time_start: measurement_statistic.time_start
     }
