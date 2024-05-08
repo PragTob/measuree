@@ -43,5 +43,8 @@ defmodule MeasureeWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  # grml SPA allow access
+  # needs to be here so OPTIONS requests are honored
+  plug CORSPlug, origin: ["http://localhost:5173"]
   plug MeasureeWeb.Router
 end

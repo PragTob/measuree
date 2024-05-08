@@ -3,8 +3,6 @@ defmodule MeasureeWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    # grml SPA allow access
-    plug CORSPlug, origin: ["http://localhost:5173"]
   end
 
   scope "/api", MeasureeWeb do

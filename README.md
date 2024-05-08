@@ -16,6 +16,7 @@ in the database.
 ## Installation
 
 * Get the tools documented in `.tool-versions` in the documented versions (slightl older _should_ work but isn't tested), [`asdf`](https://github.com/asdf-vm/asdf) with the appropriate [plugins](https://github.com/asdf-vm/asdf-plugins) can help you with that other wise check the docs ([Elixir](https://elixir-lang.org/install.html), [postgres](https://www.postgresql.org/docs/current/tutorial-install.html)).
+* adjust postgres installation
 * make sure postgres is started `pg_ctl start`
 
 ## Language
@@ -29,6 +30,7 @@ The task is very wide roaming and building a full application to do this is almo
 * no **user auth is needed**/the application is protected/limited access in another way (mostly not to add an entire auth system to the challenge)
 * **Metrics are limited, known upfront** and don't need frequent changes --> Allows us to forego CRUD features for metrics and provide select boxes for submitting measurements.
   * Also means that storing them in a separate table and reference makes sense as the names don't change all the time
+  * also means we don't need features on the frontend to deal with 100+ metrics, if we have max. 10 displaying them all all the time is probably fine
 * Metrics are unique aka no 2 of the same name can exist
 * There are no further constraints on metrics i.e. a metric named "S" may be valid, further validations not necessary as we manage the data
 * timestamp accuracy for measurements doesn't need to be in the microseconds (aka seconds are enough)
