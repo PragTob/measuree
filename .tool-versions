@@ -1,3 +1,4 @@
 elixir 1.16.2-otp-26
 erlang 26.1.2
 postgres 16.1
+nodejs 20.12.2
