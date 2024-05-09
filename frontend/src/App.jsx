@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MeasurementForm from './components/MeasurementForm';
 import Graphs from './components/Graphs';
 import { fetchMeasurementStatistics, postMeasurement } from './api';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const [statistics, setStatistics] = useState(null);
@@ -23,6 +24,7 @@ function App() {
 
   return (
     <div>
+      <Toaster />
       <Graphs statistics={statistics} />
       <MeasurementForm onSubmit={handleSubmit} />
     </div>

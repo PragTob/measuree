@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchMetrics } from './../api';
+import toast from 'react-hot-toast';
 
 function MeasurementForm({ onSubmit }) {
   const [formData, setFormData] = useState({
@@ -32,7 +33,7 @@ function MeasurementForm({ onSubmit }) {
       setError(null);
       await onSubmit(formData);
       // Clear form fields after successful submission
-      // give me some toast
+      toast("Measurement submitted successfully!")
       setFormData({
         metric_id: '',
         value: '',
