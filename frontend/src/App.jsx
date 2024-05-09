@@ -1,8 +1,8 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import MeasurementForm from './components/MeasurementForm';
 import Graphs from './components/Graphs';
 import { fetchMeasurementStatistics, fetchMetrics, postMeasurement } from './api';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
   const [statistics, setStatistics] = useState(null);
@@ -11,20 +11,29 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const statistics = await fetchMeasurementStatistics();
-      const metrics = await fetchMetrics();
+      try {
+        const statistics = await fetchMeasurementStatistics();
+        const metrics = await fetchMetrics();
 
-      setStatistics(statistics);
-      setMetrics(metrics);
+        setStatistics(statistics);
+        setMetrics(metrics);
+      } catch (error) {
+        toast.error("Oops! Fetching data failed: " + error.message)
+      }
     }
+
     fetchData();
   }, []);
 
   const handleSubmit = async (formData) => {
-    await postMeasurement(formData);
-    // Refresh statistics after submitting a new measurement
-    const updatedStatistics = await fetchMeasurementStatistics();
-    setStatistics(updatedStatistics);
+    try {
+      await postMeasurement(formData);
+      // Refresh statistics after submitting a new measurement
+      const updatedStatistics = await fetchMeasurementStatistics();
+      setStatistics(updatedStatistics);
+    } catch (error) {
+      toast.error("Oops! Fetching data failed: " + error.message)
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 function MeasurementForm({ onSubmit, metrics }) {
@@ -34,6 +34,7 @@ function MeasurementForm({ onSubmit, metrics }) {
       });
 
     } catch (error) {
+      toast.error("Oh noes! Form submit failed!")
       setError(error.message);
     }
   };

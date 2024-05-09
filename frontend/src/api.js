@@ -11,8 +11,7 @@ export async function fetchMetrics() {
     return json.data;
   } catch (error) {
     console.error(error);
-    // FE: return error message to dislay on FE
-    return null;
+    throw error;
   }
 }
 
@@ -27,7 +26,7 @@ export async function fetchMeasurementStatistics() {
     return json.data;
   } catch (error) {
     console.error(error);
-    return null;
+    throw error;
   }
 }
 

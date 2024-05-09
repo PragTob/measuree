@@ -1,4 +1,3 @@
-import React from 'react';
 import Graph from './Graph';
 
 function Graphs({ statistics, metrics }) {
@@ -6,9 +5,9 @@ function Graphs({ statistics, metrics }) {
 
   return (
     <section id="graphs">
-      <Graph title="Minute" statistics={statistics.minute} metrics={metrics} />
-      <Graph title="Hour" statistics={statistics.hour} metrics={metrics} />
       <Graph title="Day" statistics={statistics.day} metrics={metrics} />
+      <Graph title="Hour" statistics={statistics.hour} metrics={metrics} />
+      <Graph title="Minute" statistics={statistics.minute} metrics={metrics} />
     </section>
   );
 }
