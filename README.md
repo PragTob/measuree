@@ -15,9 +15,12 @@ in the database.
 
 ## Installation
 
-* Get the tools documented in `.tool-versions` in the documented versions (slightl older _should_ work but isn't tested), [`asdf`](https://github.com/asdf-vm/asdf) with the appropriate [plugins](https://github.com/asdf-vm/asdf-plugins) can help you with that other wise check the docs ([Elixir](https://elixir-lang.org/install.html), [postgres](https://www.postgresql.org/docs/current/tutorial-install.html)).
-* adjust postgres installation
+* Get the tools documented in `.tool-versions` in the documented versions (slightly older _should_ work but isn't tested), [`asdf`](https://github.com/asdf-vm/asdf) with the appropriate [plugins](https://github.com/asdf-vm/asdf-plugins) can help you with that otherwise check the docs ([Elixir](https://elixir-lang.org/install.html), [postgres](https://www.postgresql.org/docs/current/tutorial-install.html) & [nodejs](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs)).
+* Either edit `backend/config/dev.exs` to make postgres data work, or set `POSTGRES_USER` and `POSTGRES_PASSWORD` ENV variables.
 * make sure postgres is started `pg_ctl start`
+* in `backend` run `mix ecto.setup` and then `mix phx.server`
+* in `frontend` run `npm i` and then `npm run dev`
+* You should now be available to see the application working at [`localhost:5173`](http://localhost:5173/)
 
 ## Language
 
