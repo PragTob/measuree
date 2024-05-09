@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { fetchMetrics } from './../api';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
 function MeasurementForm({ onSubmit, metrics }) {
+  // Slice to remove seconds and milliseconds
+  const now = new Date();
+  const currentTimeString = now.toISOString().slice(0, 16);
   const [formData, setFormData] = useState({
     metric_id: '',
     value: '',
-    timestamp: '',
+    timestamp: currentTimeString,
   });
   const [error, setError] = useState(null);
   // loading and submitting state
@@ -22,13 +24,15 @@ function MeasurementForm({ onSubmit, metrics }) {
     try {
       setError(null);
       await onSubmit(formData);
-      // Clear form fields after successful submission
       toast.success("Measurement submitted successfully!")
+
+      // Clear value after submission, keep metric and timestamp as likely to be used again
       setFormData({
-        metric_id: '',
         value: '',
-        timestamp: '',
+        metric: formData.metric_id,
+        timestamp: formData.timestamp
       });
+
     } catch (error) {
       setError(error.message);
     }
