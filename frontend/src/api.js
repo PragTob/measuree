@@ -30,6 +30,15 @@ export async function fetchMeasurementStatistics() {
   }
 }
 
+function errorMessage(errorObject) {
+  let errorMessage = "Encountered errors:\n"
+  for (const [attribute, messages] of Object.entries(errorObject)) {
+    errorMessage += `${attribute}: ${messages.join(', ')}\n`;
+  }
+
+  return errorMessage;
+}
+
 export async function postMeasurement(formData) {
   try {
     const response = await fetch(`${BASE_URL}/measurements`, {
@@ -43,7 +52,7 @@ export async function postMeasurement(formData) {
       if (response.status === 422) {
         const responseBody = await response.json();
         if (responseBody.errors) {
-          throw new Error(responseBody.errors.join(', '));
+          throw new Error(errorMessage(responseBody.errors));
         } else {
           throw new Error('Unprocessable Entity');
         }

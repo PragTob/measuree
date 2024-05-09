@@ -87,3 +87,4 @@ Other considerations:
 
 * **Containerization** would be much appreciated, but in the interest of time, me usually running bare metal and the mandated complexity of 2 applications
 * **Batch submit** for measurements might be a nice feature, but it's a bit more complex to build and the semantics are interesting aka if one fails does the entire batch fail or just the one and the others are accepted?
+* **End-to-End tests** with cypress or playwright would be very necessary and welcome to ensure the applications and their interplay would work, but frankly - it was enough work this fiar :D

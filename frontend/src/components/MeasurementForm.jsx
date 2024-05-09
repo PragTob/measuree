@@ -24,17 +24,18 @@ function MeasurementForm({ onSubmit, metrics }) {
     try {
       setError(null);
       await onSubmit(formData);
+
       toast.success("Measurement submitted successfully!")
 
       // Clear value after submission, keep metric and timestamp as likely to be used again
       setFormData({
         value: '',
-        metric: formData.metric_id,
+        metric_id: formData.metric_id,
         timestamp: formData.timestamp
       });
-
     } catch (error) {
-      toast.error("Oh noes! Form submit failed!")
+      toast.error("Oops! Submitting the form failed!:\n" + error.message)
+
       setError(error.message);
     }
   };

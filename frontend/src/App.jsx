@@ -26,14 +26,11 @@ function App() {
   }, []);
 
   const handleSubmit = async (formData) => {
-    try {
-      await postMeasurement(formData);
-      // Refresh statistics after submitting a new measurement
-      const updatedStatistics = await fetchMeasurementStatistics();
-      setStatistics(updatedStatistics);
-    } catch (error) {
-      toast.error("Oops! Fetching data failed: " + error.message)
-    }
+    await postMeasurement(formData);
+
+    // Refresh statistics after submitting a new measurement
+    const updatedStatistics = await fetchMeasurementStatistics();
+    setStatistics(updatedStatistics);
   };
 
   return (
