@@ -152,6 +152,14 @@ defmodule Measuree.MetricsTest do
       assert Metrics.list_measurement_statistics() == [measurement_statistic]
     end
 
+    test "list_measurement_statistics/0 orders the result by time_start (important for graphing)" do
+      last = measurement_statistic_fixture(%{time_start: ~U[2024-05-06 12:47:02Z]})
+      first = measurement_statistic_fixture(%{time_start: ~U[2024-05-06 12:47:00Z]})
+      middle = measurement_statistic_fixture(%{time_start: ~U[2024-05-06 12:47:01Z]})
+
+      assert Metrics.list_measurement_statistics() == [first, middle, last]
+    end
+
     test "create_measurement_statistic/1 with valid data creates a measurement_statistic" do
       metric = metric_fixture()
 

@@ -201,7 +201,6 @@ defmodule Measuree.Metrics do
   alias Measuree.Metrics.MeasurementStatistic
 
   def list_measurement_statistics do
-    # TODO: test ordering
     Repo.all(order_by(MeasurementStatistic, asc: :time_start))
   end
 
