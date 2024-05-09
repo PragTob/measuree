@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import MeasurementForm from './components/MeasurementForm';
 import Graphs from './components/Graphs';
-import { fetchMeasurementStatistics, postMeasurement } from './api';
+import { fetchMeasurementStatistics, fetchMetrics, postMeasurement } from './api';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
   const [statistics, setStatistics] = useState(null);
+  const [metrics, setMetrics] = useState([]);
+
 
   useEffect(() => {
     async function fetchData() {
-      const data = await fetchMeasurementStatistics();
-      setStatistics(data);
+      const statistics = await fetchMeasurementStatistics();
+      const metrics = await fetchMetrics();
+
+      setStatistics(statistics);
+      setMetrics(metrics);
     }
     fetchData();
   }, []);
@@ -23,11 +28,12 @@ function App() {
   };
 
   return (
-    <div>
+    <Fragment>
+      <h1>Welcome to Measuree!</h1>
       <Toaster />
-      <Graphs statistics={statistics} />
-      <MeasurementForm onSubmit={handleSubmit} />
-    </div>
+      <Graphs statistics={statistics} metrics={metrics} />
+      <MeasurementForm onSubmit={handleSubmit} metrics={metrics} />
+    </Fragment>
   );
 }
 

@@ -2,7 +2,12 @@ import React from 'react';
 
 import Plot from 'react-plotly.js';
 
-function Graph({ title, statistics }) {
+function Graph({ title, statistics, metrics }) {
+
+  const metricIdToName = metrics.reduce((map, metric) => {
+    map[metric.id] = metric.name;
+    return map;
+  }, {});
 
   const graphData = Object.entries(statistics).map(([metricId, data]) => (
     {
@@ -10,8 +15,7 @@ function Graph({ title, statistics }) {
       y: data.map(stat => stat.average),
       type: 'scatter',
       mode: 'lines+markers',
-      // TODO: get/look up name
-      name: metricId
+      name: metricIdToName[metricId]
     }
   ))
 

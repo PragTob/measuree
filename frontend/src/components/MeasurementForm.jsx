@@ -2,25 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { fetchMetrics } from './../api';
 import toast from 'react-hot-toast';
 
-function MeasurementForm({ onSubmit }) {
+function MeasurementForm({ onSubmit, metrics }) {
   const [formData, setFormData] = useState({
     metric_id: '',
     value: '',
     timestamp: '',
   });
   const [error, setError] = useState(null);
-  const [metrics, setMetrics] = useState([]);
   // loading and submitting state
-
-  useEffect(() => {
-    async function fetchMetricsData() {
-      const data = await fetchMetrics();
-      if (data) {
-        setMetrics(data);
-      }
-    }
-    fetchMetricsData();
-  }, []);
+  // disable submit button when in submitting state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
