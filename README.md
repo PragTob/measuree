@@ -15,7 +15,7 @@ in the database.
 
 ## Installation
 
-* Get the tools documented in `.tool-versions` in the documented versions (slightly older _should_ work but isn't tested), [`asdf`](https://github.com/asdf-vm/asdf) with the appropriate [plugins](https://github.com/asdf-vm/asdf-plugins) can help you with that otherwise check the docs ([Elixir](https://elixir-lang.org/install.html), [postgres](https://www.postgresql.org/docs/current/tutorial-install.html) & [nodejs](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs)).
+* Get the tools documented in `.tool-versions` in the documented versions (slightly off _should_ work but isn't tested), [`asdf`](https://github.com/asdf-vm/asdf) with the appropriate [plugins](https://github.com/asdf-vm/asdf-plugins) can help you with that otherwise check the docs ([Elixir](https://elixir-lang.org/install.html), [postgres](https://www.postgresql.org/docs/current/tutorial-install.html) & [nodejs](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs)).
 * Either edit `backend/config/dev.exs` to make postgres data work, or set `POSTGRES_USER` and `POSTGRES_PASSWORD` ENV variables.
 * make sure postgres is started `pg_ctl start`
 * in `backend` run `mix ecto.setup` and then `mix phx.server`
@@ -55,6 +55,8 @@ The task is very wide roaming and building a full application to do this is almo
 
 ## Decisions
 
+Some of the Decisions made during the implementation:
+
 ### Statistics Cache
 
 I decided to implement a cache, as per assumptions I don't expect to get a lot of old data so calculating averages on every request seems like a waste. And at the same time, if we don't often get old data a lot of the data (and hence the cache) are pretty stable.
@@ -81,6 +83,9 @@ Other considerations:
 
 ### Others
 * According to assumptions **CRUD API functionality (except for index) is removed** for metrics & others, CRUD functionality on the context level remains to allow easy changes/addition if necessary (if this was in production and we needed a new metric, someone could connect to a prod console and add a metric if this was rare)
+* as per the assumption that metrics are small in number and known upfront, they're modeled in a separate table to normalize/avoid duplication and also make handling easier
+* Due to the small size, the frontend has been kept relatively vanilla without many commonly used libraries
+* It's an SPA with a completely separate FE and BE, but for something this size I'd normally likely have reached for a completely server side rendered application or the FE embedded in the HTML sent by the BE i.e. React on Phoenix
 
 
 ## Improvements
@@ -91,13 +96,14 @@ List of improvements that could be made even given the assumptions, but were lef
 * **Batch submit** for measurements might be a nice feature, but it's a bit more complex to build and the semantics are interesting aka if one fails does the entire batch fail or just the one and the others are accepted?
 * **End-to-End tests** with cypress or playwright would be very necessary and welcome to ensure the applications and their interplay would work, but frankly - it was enough work this fiar :D
 * **CI** - setting up a CI to run a lint and all tests would be nice/needed
-* **FE library usage** - as usage of forms and APIs is minimal the decision has been made to keep it vanilla, but if the application was due to grow usage of libraries such as axios and formtastic would likely be a good idea
+* **FE library usage** - as usage of forms and APIs is minimal as the decision has been made to keep it vanilla due to its small size. But, if the application was due to grow usage of libraries such as axios and formtastic would likely be a good idea.
 * **UI Design** could be a lot nicer and is very bare bones as is
   * unclear if we'd want to see all graphs at once or if we'd like to Tab them?
+  * design is desktop only right now, and not the most flexible at that
   * get some more styles in there, f.ex. Tailwind
   * Show error right on the fields where they occur
   * Given the seed data the _minute_ graph is barely usable without manually zooming in, so configuring plotly to start that graph zoomed in would be nice
-* There should probably be a way to **edit measurement**, as there is no way for the user right now to fix an errornously submitted measurement (but that'd also include listing them somehow)
+* There should probably be a way to **edit a measurement**, as there is no way for the user right now to fix an errornously submitted measurement (but that'd also include listing them somehow)
 * **Pagination/data mas prevention** right now all measurement statistics are loaded from the backend and drawn in the graphs, this will eventually kill the FE or the BE. To combat this, we'd need an interface that allows to filter a data period (as tools like kibana or datadog) have to limit the data displayed to usable amounts.
   * we'd also need to adjust indexes on the backend for this (there's no index on `time_start` as of now)
   * limiting the metrics loaded/displayed would also be helpful (right now you can hide them in the graph UI after loading, but limiting them before load would also be helpful and save the backend some trouble)
