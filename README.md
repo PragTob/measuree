@@ -24,7 +24,8 @@ in the database.
 
 ## Language
 
-* Metric - a value we'd want to measure, such as "Temperature" or "Length"
+* Metric - a value we'd want to measure, such as, "CO", "Temperature" or "Length"
+* Measurement - a single value taken/measured for a given metric
 
 ## Assumptions
 
@@ -48,6 +49,9 @@ The task is very wide roaming and building a full application to do this is almo
 * Refresh for new data doesn't need to be immediate/automatic and a manual refresh is enough, hence no websocket updates were implemented
 * We do not need to account for special time zone shenanigans, such as the time zones in India being off by half an hour.
 * The metric of a given measurement does not change (---> we don't need to go and update the average cache for the old value)
+
+## Note-worthy
+* Too much noise in the graphs? Be mindful that you **can deactivate the display of certain metrics** by clicking on the list of metrics to the right!
 
 ## Decisions
 
