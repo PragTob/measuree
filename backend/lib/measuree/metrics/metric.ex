@@ -2,6 +2,10 @@ defmodule Measuree.Metrics.Metric do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @moduledoc """
+  A metric we want to measure. Something like "CO" or "length".
+  """
+
   schema "metrics" do
     field :name, :string
 
