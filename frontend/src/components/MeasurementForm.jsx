@@ -40,7 +40,7 @@ function MeasurementForm({ onSubmit, metrics }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} role="form">
       <h2>Submit New Measurement</h2>
       {error && <div style={{ color: 'red' }}>{error}</div>}
       <label>
