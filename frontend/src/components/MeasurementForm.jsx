@@ -33,7 +33,7 @@ function MeasurementForm({ onSubmit }) {
       setError(null);
       await onSubmit(formData);
       // Clear form fields after successful submission
-      toast("Measurement submitted successfully!")
+      toast.success("Measurement submitted successfully!")
       setFormData({
         metric_id: '',
         value: '',
