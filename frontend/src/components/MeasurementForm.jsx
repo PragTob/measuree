@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import toast from 'react-hot-toast';
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 function MeasurementForm({ onSubmit, metrics }) {
   // Slice to remove seconds and milliseconds
   const now = new Date();
   const currentTimeString = now.toISOString().slice(0, 16);
   const [formData, setFormData] = useState({
-    metric_id: '',
-    value: '',
+    metric_id: "",
+    value: "",
     timestamp: currentTimeString,
   });
   const [error, setError] = useState(null);
@@ -25,16 +25,16 @@ function MeasurementForm({ onSubmit, metrics }) {
       setError(null);
       await onSubmit(formData);
 
-      toast.success("Measurement submitted successfully!")
+      toast.success("Measurement submitted successfully!");
 
       // Clear value after submission, keep metric and timestamp as likely to be used again
       setFormData({
-        value: '',
+        value: "",
         metric_id: formData.metric_id,
-        timestamp: formData.timestamp
+        timestamp: formData.timestamp,
       });
     } catch (error) {
-      toast.error("Oops! Submitting the form failed!:\n" + error.message)
+      toast.error("Oops! Submitting the form failed!:\n" + error.message);
 
       setError(error.message);
     }
@@ -43,10 +43,14 @@ function MeasurementForm({ onSubmit, metrics }) {
   return (
     <form onSubmit={handleSubmit} role="form">
       <h2>Submit New Measurement</h2>
-      {error && <div style={{ color: 'red' }}>{error}</div>}
+      {error && <div style={{ color: "red" }}>{error}</div>}
       <label>
         Metric Name:
-        <select name="metric_id" value={formData.metric_id} onChange={handleChange}>
+        <select
+          name="metric_id"
+          value={formData.metric_id}
+          onChange={handleChange}
+        >
           <option value="">Select a Metric</option>
           {metrics.map((metric) => (
             <option key={metric.id} value={metric.id}>
@@ -57,14 +61,31 @@ function MeasurementForm({ onSubmit, metrics }) {
       </label>
       <label>
         Value:
-        <input type="number" step="0.01" name="value" value={formData.value} onChange={handleChange} />
+        <input
+          type="number"
+          step="0.01"
+          name="value"
+          value={formData.value}
+          onChange={handleChange}
+        />
       </label>
       <label>
         Timestamp:
-        <input type="datetime-local" name="timestamp" value={formData.timestamp} onChange={handleChange} />
+        <input
+          type="datetime-local"
+          name="timestamp"
+          value={formData.timestamp}
+          onChange={handleChange}
+        />
       </label>
-      <button className="success-button" style={{ marginTop: "10px" }} type="submit">Submit</button>
-    </form >
+      <button
+        className="success-button"
+        style={{ marginTop: "10px" }}
+        type="submit"
+      >
+        Submit
+      </button>
+    </form>
   );
 }
 

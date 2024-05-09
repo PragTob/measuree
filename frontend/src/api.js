@@ -1,10 +1,10 @@
-const BASE_URL = 'http://localhost:4000/api';
+const BASE_URL = "http://localhost:4000/api";
 
 export async function fetchMetrics() {
   try {
     const response = await fetch(`${BASE_URL}/metrics`);
     if (!response.ok) {
-      throw new Error('Failed to fetch metrics');
+      throw new Error("Failed to fetch metrics");
     }
     const json = await response.json();
 
@@ -19,7 +19,7 @@ export async function fetchMeasurementStatistics() {
   try {
     const response = await fetch(`${BASE_URL}/measurement_statistics`);
     if (!response.ok) {
-      throw new Error('Failed to fetch measurement statistics');
+      throw new Error("Failed to fetch measurement statistics");
     }
     const json = await response.json();
 
@@ -31,9 +31,9 @@ export async function fetchMeasurementStatistics() {
 }
 
 function errorMessage(errorObject) {
-  let errorMessage = "Encountered errors:\n"
+  let errorMessage = "Encountered errors:\n";
   for (const [attribute, messages] of Object.entries(errorObject)) {
-    errorMessage += `${attribute}: ${messages.join(', ')}\n`;
+    errorMessage += `${attribute}: ${messages.join(", ")}\n`;
   }
 
   return errorMessage;
@@ -42,9 +42,9 @@ function errorMessage(errorObject) {
 export async function postMeasurement(formData) {
   try {
     const response = await fetch(`${BASE_URL}/measurements`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ measurement: formData }),
     });
@@ -54,14 +54,14 @@ export async function postMeasurement(formData) {
         if (responseBody.errors) {
           throw new Error(errorMessage(responseBody.errors));
         } else {
-          throw new Error('Unprocessable Entity');
+          throw new Error("Unprocessable Entity");
         }
       } else {
-        throw new Error('Failed to post measurement');
+        throw new Error("Failed to post measurement");
       }
     }
     // make effect in UI
-    console.log('Measurement posted successfully');
+    console.log("Measurement posted successfully");
   } catch (error) {
     console.error(error);
     throw error;

@@ -1,21 +1,18 @@
-import Plot from 'react-plotly.js';
+import Plot from "react-plotly.js";
 
 function Graph({ title, statistics, metrics }) {
-
   const metricIdToName = metrics.reduce((map, metric) => {
     map[metric.id] = metric.name;
     return map;
   }, {});
 
-  const graphData = Object.entries(statistics).map(([metricId, data]) => (
-    {
-      x: data.map(stat => stat.time_start),
-      y: data.map(stat => stat.average),
-      type: 'scatter',
-      mode: 'lines+markers',
-      name: metricIdToName[metricId]
-    }
-  ))
+  const graphData = Object.entries(statistics).map(([metricId, data]) => ({
+    x: data.map((stat) => stat.time_start),
+    y: data.map((stat) => stat.average),
+    type: "scatter",
+    mode: "lines+markers",
+    name: metricIdToName[metricId],
+  }));
 
   return (
     <div>
@@ -28,11 +25,11 @@ function Graph({ title, statistics, metrics }) {
           height: 800,
           title: title,
           xaxis: {
-            title: "Time"
+            title: "Time",
           },
           yaxis: {
-            title: "Value"
-          }
+            title: "Value",
+          },
         }}
         config={{ displaylogo: false }}
       />

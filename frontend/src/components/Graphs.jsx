@@ -1,7 +1,7 @@
-import Graph from './Graph';
+import Graph from "./Graph";
 
 function Graphs({ statistics, metrics }) {
-  if (!statistics || (metrics.length == 0)) return <div>Loading...</div>;
+  if (!statistics || metrics.length == 0) return <div>Loading...</div>;
 
   return (
     <section id="graphs">
