@@ -63,8 +63,8 @@ function MeasurementForm({ onSubmit, metrics }) {
         Timestamp:
         <input type="datetime-local" name="timestamp" value={formData.timestamp} onChange={handleChange} />
       </label>
-      <button type="submit">Submit</button>
-    </form>
+      <button className="success-button" style={{ marginTop: "10px" }} type="submit">Submit</button>
+    </form >
   );
 }
 

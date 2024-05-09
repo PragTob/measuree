@@ -48,7 +48,7 @@ The task is very wide roaming and building a full application to do this is almo
 * The UI is mostly for reading, of **possibly a lot of data** also **old data isn't submitted often** (aka it's unusualy to get data for a day or 2 ago, or even last hour) hence the decision was made to cache the averages instead of calculating them dynamically
 * Refresh for new data doesn't need to be immediate/automatic and a manual refresh is enough, hence no websocket updates were implemented
 * We do not need to account for special time zone shenanigans, such as the time zones in India being off by half an hour.
-* The metric of a given measurement does not change (---> we don't need to go and update the average cache for the old value)
+* The metric of a given measurement does not change (---> we don't need to go and update the average cache for the old value). Generally speaking, as there is no interface to update measurements right now, the update use case wasn't a main concern.
 
 ## Note-worthy
 * Too much noise in the graphs? Be mindful that you **can deactivate the display of certain metrics** by clicking on the list of metrics to the right!
@@ -80,11 +80,25 @@ Other considerations:
 * the update of the statistics calculates the averages freshly every time, discarding previous results, as such it is idempotent and "self-healing" - should a bad value have snuck in triggering the statistics calculation again will fix it (as opposed to a more efficient incremental update of the average). Especially the "self-healing" aspect here is important.
 
 ### Others
-* According to assumptions **CRUD API functionality (except for index) is removed** for metrics, CRUD functionality on the context level remains to allow easy changes/addition if necessary (if this was in production and we needed a new metric, someone could connect to a prod console and add a metric if this was rare)
+* According to assumptions **CRUD API functionality (except for index) is removed** for metrics & others, CRUD functionality on the context level remains to allow easy changes/addition if necessary (if this was in production and we needed a new metric, someone could connect to a prod console and add a metric if this was rare)
 
 
 ## Improvements
 
+List of improvements that could be made even given the assumptions, but were left out:
+
 * **Containerization** would be much appreciated, but in the interest of time, me usually running bare metal and the mandated complexity of 2 applications
 * **Batch submit** for measurements might be a nice feature, but it's a bit more complex to build and the semantics are interesting aka if one fails does the entire batch fail or just the one and the others are accepted?
 * **End-to-End tests** with cypress or playwright would be very necessary and welcome to ensure the applications and their interplay would work, but frankly - it was enough work this fiar :D
+* **CI** - setting up a CI to run a lint and all tests would be nice/needed
+* **FE library usage** - as usage of forms and APIs is minimal the decision has been made to keep it vanilla, but if the application was due to grow usage of libraries such as axios and formtastic would likely be a good idea
+* **UI Design** could be a lot nicer and is very bare bones as is
+  * unclear if we'd want to see all graphs at once or if we'd like to Tab them?
+  * get some more styles in there, f.ex. Tailwind
+  * Show error right on the fields where they occur
+  * Given the seed data the _minute_ graph is barely usable without manually zooming in, so configuring plotly to start that graph zoomed in would be nice
+* There should probably be a way to **edit measurement**, as there is no way for the user right now to fix an errornously submitted measurement (but that'd also include listing them somehow)
+* **Pagination/data mas prevention** right now all measurement statistics are loaded from the backend and drawn in the graphs, this will eventually kill the FE or the BE. To combat this, we'd need an interface that allows to filter a data period (as tools like kibana or datadog) have to limit the data displayed to usable amounts.
+  * we'd also need to adjust indexes on the backend for this (there's no index on `time_start` as of now)
+  * limiting the metrics loaded/displayed would also be helpful (right now you can hide them in the graph UI after loading, but limiting them before load would also be helpful and save the backend some trouble)
+  * the queries created here, naturally should be included in the URL for sharability
