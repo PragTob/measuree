@@ -5,9 +5,21 @@ function Graphs({ statistics, metrics }) {
 
   return (
     <section id="graphs">
-      <Graph title="Day" statistics={statistics.day} metrics={metrics} />
-      <Graph title="Hour" statistics={statistics.hour} metrics={metrics} />
-      <Graph title="Minute" statistics={statistics.minute} metrics={metrics} />
+      <Graph
+        title="Daily Averages"
+        statistics={statistics.day}
+        metrics={metrics}
+      />
+      <Graph
+        title="Hourly Averages"
+        statistics={statistics.hour}
+        metrics={metrics}
+      />
+      <Graph
+        title="Minute Averages"
+        statistics={statistics.minute}
+        metrics={metrics}
+      />
     </section>
   );
 }

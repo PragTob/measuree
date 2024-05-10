@@ -1,9 +1,10 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { postMeasurement } from "./../api";
 
 function MeasurementForm({ onSubmit, metrics }) {
-  // Slice to remove seconds and milliseconds
   const now = new Date();
+  // Slice to remove seconds and milliseconds
   const currentTimeString = now.toISOString().slice(0, 16);
   const [formData, setFormData] = useState({
     metric_id: "",
@@ -11,8 +12,7 @@ function MeasurementForm({ onSubmit, metrics }) {
     timestamp: currentTimeString,
   });
   const [error, setError] = useState(null);
-  // loading and submitting state
-  // disable submit button when in submitting state
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,9 +22,10 @@ function MeasurementForm({ onSubmit, metrics }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setSubmitting(true);
       setError(null);
-      await onSubmit(formData);
-
+      await postMeasurement(formData);
+      setSubmitting(false);
       toast.success("Measurement submitted successfully!");
 
       // Clear value after submission, keep metric and timestamp as likely to be used again
@@ -33,9 +34,12 @@ function MeasurementForm({ onSubmit, metrics }) {
         metric_id: formData.metric_id,
         timestamp: formData.timestamp,
       });
+
+      onSubmit();
     } catch (error) {
       toast.error("Oops! Submitting the form failed!:\n" + error.message);
 
+      setSubmitting(false);
       setError(error.message);
     }
   };
@@ -44,6 +48,8 @@ function MeasurementForm({ onSubmit, metrics }) {
     <form onSubmit={handleSubmit} role="form">
       <h2>Submit New Measurement</h2>
       {error && <div style={{ color: "red" }}>{error}</div>}
+      {submitting && <div>Submitting...</div>}
+
       <label>
         Metric Name:
         <select
@@ -82,6 +88,7 @@ function MeasurementForm({ onSubmit, metrics }) {
         className="success-button"
         style={{ marginTop: "10px" }}
         type="submit"
+        disabled={submitting}
       >
         Submit
       </button>

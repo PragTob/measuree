@@ -5,6 +5,11 @@
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import MeasurementForm from "./MeasurementForm";
+import { postMeasurement } from "../api";
+
+jest.mock("./../api", () => ({
+  postMeasurement: jest.fn(),
+}));
 
 describe("MeasurementForm", () => {
   test("renders with initial values", () => {
@@ -19,45 +24,55 @@ describe("MeasurementForm", () => {
     expect(timestampValue).toMatch(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/);
   });
 
-  test("submits form with valid data", async () => {
-    const onSubmit = jest.fn();
-    const metrics = [
-      { id: 1, name: "Metric 1" },
-      { id: 2, name: "Metric 2" },
-    ];
-    render(<MeasurementForm onSubmit={onSubmit} metrics={metrics} />);
-
-    const timestamp = "2024-05-10T19:43:22";
-    const timestampWithPrecision = `${timestamp}.000`;
-
-    // Fill out the form
-    fireEvent.change(screen.getByLabelText("Metric Name:"), {
-      target: { value: "1" },
-    });
-    fireEvent.change(screen.getByLabelText("Value:"), {
-      target: { value: "10" },
-    });
-    fireEvent.change(screen.getByLabelText("Timestamp:"), {
-      target: { value: timestamp },
+  describe("sbmitting values", () => {
+    afterEach(() => {
+      jest.restoreAllMocks();
     });
 
-    fireEvent.submit(screen.getByRole("form"));
+    test("submits form with valid data", async () => {
+      const onSubmit = jest.fn();
+      const metrics = [
+        { id: 1, name: "Metric 1" },
+        { id: 2, name: "Metric 2" },
+      ];
+      render(<MeasurementForm onSubmit={onSubmit} metrics={metrics} />);
 
-    await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalledWith({
-        metric_id: "1",
-        value: "10",
-        timestamp: timestampWithPrecision,
+      const timestamp = "2024-05-10T19:43:22";
+      const timestampWithPrecision = `${timestamp}.000`;
+
+      // Fill out the form
+      fireEvent.change(screen.getByLabelText("Metric Name:"), {
+        target: { value: "1" },
       });
+      fireEvent.change(screen.getByLabelText("Value:"), {
+        target: { value: "10" },
+      });
+      fireEvent.change(screen.getByLabelText("Timestamp:"), {
+        target: { value: timestamp },
+      });
+
+      fireEvent.submit(screen.getByRole("form"));
+
+      await waitFor(() => {
+        expect(postMeasurement).toHaveBeenCalledWith({
+          metric_id: "1",
+          value: "10",
+          timestamp: timestampWithPrecision,
+        });
+      });
+
+      await waitFor(() => {
+        expect(onSubmit).toHaveBeenCalled();
+      });
+
+      // Assert that metric and timetsamp are kept
+      expect(screen.getByLabelText("Metric Name:")).toHaveValue("1");
+      expect(screen.getByLabelText("Timestamp:")).toHaveValue(
+        timestampWithPrecision,
+      );
+
+      // But value is cleared
+      expect(screen.getByLabelText("Value:")).toHaveValue(null);
     });
-
-    // Assert that metric and timetsamp are kept
-    expect(screen.getByLabelText("Metric Name:")).toHaveValue("1");
-    expect(screen.getByLabelText("Timestamp:")).toHaveValue(
-      timestampWithPrecision,
-    );
-
-    // But value is cleared
-    expect(screen.getByLabelText("Value:")).toHaveValue(null);
   });
 });

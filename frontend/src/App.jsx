@@ -4,7 +4,6 @@ import Graphs from "./components/Graphs";
 import {
   fetchMeasurementStatistics,
   fetchMetrics,
-  postMeasurement,
 } from "./api";
 import toast, { Toaster } from "react-hot-toast";
 import Modal from "react-modal";
@@ -39,10 +38,7 @@ function App() {
     fetchData();
   }, []);
 
-  const handleSubmit = async (formData) => {
-    await postMeasurement(formData);
-    closeModal();
-
+  const handleSubmit = async () => {
     // Refresh statistics after submitting a new measurement
     const updatedStatistics = await fetchMeasurementStatistics();
     setStatistics(updatedStatistics);
