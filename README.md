@@ -104,7 +104,8 @@ List of improvements that could be made even given the assumptions, but were lef
   * Show error right on the fields where they occur
   * Given the seed data the _minute_ graph is barely usable without manually zooming in, so configuring plotly to start that graph zoomed in would be nice
 * There should probably be a way to **edit a measurement**, as there is no way for the user right now to fix an errornously submitted measurement (but that'd also include listing them somehow)
-* **Pagination/data mas prevention** right now all measurement statistics are loaded from the backend and drawn in the graphs, this will eventually kill the FE or the BE. To combat this, we'd need an interface that allows to filter a data period (as tools like kibana or datadog) have to limit the data displayed to usable amounts.
+* **Pagination/data filtering/data mass prevention** right now all measurement statistics are loaded from the backend and drawn in the graphs, this will eventually kill the FE or the BE. To combat this, we'd need an interface that allows to filter a data period (as tools like kibana or datadog) have to limit the data displayed to usable amounts.
   * we'd also need to adjust indexes on the backend for this (there's no index on `time_start` as of now)
   * limiting the metrics loaded/displayed would also be helpful (right now you can hide them in the graph UI after loading, but limiting them before load would also be helpful and save the backend some trouble)
   * the queries created here, naturally should be included in the URL for sharability
+* **More statistics**: Average is a terrible statistic vulnerable to outliers, depending on the actual use case more statistics like minimum, maximum, 95th percentile, median, standard deviation etc. would be extremely helpful
