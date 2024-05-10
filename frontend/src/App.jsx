@@ -52,7 +52,11 @@ function App() {
 
       <div className="header-with-action">
         <h1>Welcome to Measuree!</h1>
-        <button className="success-button" onClick={openModal} disabled={metricsLoading()}>
+        <button
+          className="success-button"
+          onClick={openModal}
+          disabled={metricsLoading()}
+        >
           {metricsLoading() ? "Loading..." : "Add new Measurement"}
         </button>
       </div>
