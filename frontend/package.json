@@ -8,6 +8,7 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "format": "npx prettier . --write",
+    "check-formatted": "npx prettier . --check",
     "preview": "vite preview",
     "test": "jest"
   },

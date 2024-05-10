@@ -22,6 +22,10 @@ in the database.
 * in `frontend` run `npm i` and then `npm run dev`
 * You should now be available to see the application working at [`localhost:5173`](http://localhost:5173/)
 
+## Usage
+
+Individual commands are documented in the `frontend` and `backend` folders but you can run `check.sh` to run all linters, formatters and tests and you can use `run.sh` to start the application (assuming postgres is already running though).
+
 ## Language
 
 * Metric - a value we'd want to measure, such as, "CO", "Temperature" or "Length"
