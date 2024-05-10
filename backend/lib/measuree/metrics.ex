@@ -18,7 +18,7 @@ defmodule Measuree.Metrics do
 
   """
   def list_metrics do
-    Repo.all(Metric)
+    Repo.all(order_by(Metric, asc: :name))
   end
 
   @doc """

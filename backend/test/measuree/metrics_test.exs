@@ -15,6 +15,14 @@ defmodule Measuree.MetricsTest do
       assert Metrics.list_metrics() == [metric]
     end
 
+    test "list_metrics/0 sorts by metric name" do
+      b = metric_fixture(%{name: "B"})
+      a = metric_fixture(%{name: "A"})
+      c = metric_fixture(%{name: "C"})
+
+      assert Metrics.list_metrics() == [a, b, c]
+    end
+
     test "get_metric!/1 returns the metric with given id" do
       metric = metric_fixture()
       assert Metrics.get_metric!(metric.id) == metric
