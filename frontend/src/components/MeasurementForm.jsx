@@ -54,6 +54,7 @@ function MeasurementForm({ onSubmit, metrics }) {
         Metric Name:
         <select
           name="metric_id"
+          required
           value={formData.metric_id}
           onChange={handleChange}
         >
@@ -71,6 +72,7 @@ function MeasurementForm({ onSubmit, metrics }) {
           type="number"
           step="0.01"
           name="value"
+          required
           value={formData.value}
           onChange={handleChange}
         />
@@ -80,6 +82,7 @@ function MeasurementForm({ onSubmit, metrics }) {
         <input
           type="datetime-local"
           name="timestamp"
+          required
           value={formData.timestamp}
           onChange={handleChange}
         />
