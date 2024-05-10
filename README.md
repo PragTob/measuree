@@ -116,3 +116,4 @@ List of improvements that could be made even given the assumption above, but wer
   * limiting the metrics loaded/displayed would also be helpful (right now you can hide them in the graph UI after loading, but limiting them before load would also be helpful and save the backend some trouble)
   * the queries (metric, time range) created here, naturally should be included in the URL for sharability
 * **More statistics**: Average is a terrible statistic vulnerable to outliers, depending on the actual use case more statistics like minimum, maximum, 95th percentile, median, standard deviation etc. would be extremely helpful
+* The names of the metrics should probably include the unit of what was measured, or even add it as optional information for optional display and potential range validations
