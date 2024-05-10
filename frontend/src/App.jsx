@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import MeasurementForm from "./components/MeasurementForm";
 import Graphs from "./components/Graphs";
-import {
-  fetchMeasurementStatistics,
-  fetchMetrics,
-} from "./api";
+import { fetchMeasurementStatistics, fetchMetrics } from "./api";
 import toast, { Toaster } from "react-hot-toast";
 import Modal from "react-modal";
 import "./App.css";
@@ -20,6 +17,11 @@ function App() {
 
   const closeModal = () => {
     setModalIsOpen(false);
+  };
+
+  const metricsLoading = () => {
+    // the case that we don't have any metrics to load is ignored as per assumptions
+    metrics.length == 0;
   };
 
   useEffect(() => {
@@ -50,8 +52,8 @@ function App() {
 
       <div className="header-with-action">
         <h1>Welcome to Measuree!</h1>
-        <button className="success-button" onClick={openModal}>
-          Add new Measurement
+        <button className="success-button" onClick={openModal} disabled={metricsLoading()}>
+          {metricsLoading() ? "Loading..." : "Add new Measurement"}
         </button>
       </div>
 
